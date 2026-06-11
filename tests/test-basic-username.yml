@@ -1,0 +1,24 @@
+name: Test basic username permission check
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          username: github-actions[bot]
+        continue-on-error: true
+      - name: Assert user-permission output is set
+        env:
+          PERM: ${{ steps.action.outputs.user-permission }}
+        run: |
+          echo "user-permission: $PERM"
+          if [ -z "$PERM" ]; then
+            echo "FAIL: user-permission output was empty"
+            exit 1
+          fi
+          echo "PASS: user-permission=$PERM"

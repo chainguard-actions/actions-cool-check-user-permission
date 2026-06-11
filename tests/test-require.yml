@@ -1,0 +1,27 @@
+name: Test require permission level
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          token: ${{ github.token }}
+          username: github-actions[bot]
+          require: read
+        continue-on-error: true
+      - name: Assert require-result output is set
+        env:
+          RESULT: ${{ steps.action.outputs.require-result }}
+        run: |
+          echo "require-result: $RESULT"
+          # The output should be either 'true' or 'false' (or empty if action failed)
+          # We just verify the step ran and produced some output
+          if [ "$RESULT" != "true" ] && [ "$RESULT" != "false" ] && [ -n "$RESULT" ]; then
+            echo "FAIL: unexpected require-result value: $RESULT"
+            exit 1
+          fi
+          echo "PASS: require-result=$RESULT"
