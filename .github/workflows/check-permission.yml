@@ -1,0 +1,24 @@
+name: Check User Permission
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-cool/check-user-permission@dd299b8721172b30ae80fa66177e99b749e705e0 # main
+        id: checkUser
+        with:
+          require: 'write'
+
+      - name: close
+        if: steps.checkUser.outputs.check-result == 'false'
+        uses: actions-cool/issues-helper@a610ededc763be224a0b8f357b2f6e4a0b9e1c3b # v2.1.2
+        with:
+          actions: 'close-issue'
+          issue-number: ${{ github.event.issue.number }}
