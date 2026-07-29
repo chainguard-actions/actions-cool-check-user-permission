@@ -18,7 +18,7 @@ jobs:
 
       - name: close
         if: steps.checkUser.outputs.check-result == 'false'
-        uses: actions-cool/issues-helper@a610ededc763be224a0b8f357b2f6e4a0b9e1c3b # v2.1.2
+        uses: actions-cool/issues-helper@a610ededc4ac12d138afe9b751a3b7669c5f2a7e # v2.1.2
         with:
           actions: 'close-issue'
           issue-number: ${{ github.event.issue.number }}

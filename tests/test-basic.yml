@@ -1,4 +1,4 @@
-name: Test check-bot flag
+name: Test basic user permission check
 on:
   workflow_dispatch:
 jobs:
@@ -22,28 +22,25 @@ jobs:
         with:
           token: ${{ github.token }}
           username: ${{ steps.owner.outputs.owner }}
-          check-bot: 'true'
-      - name: Assert action ran (check-result set, or failed on the sentinel repo)
+      - name: Assert action ran (user-permission set, or failed on the sentinel repo)
         env:
-          CHECK_RESULT: ${{ steps.action.outputs.check-result }}
           PERM: ${{ steps.action.outputs.user-permission }}
           OUTCOME: ${{ steps.action.outcome }}
         run: |
           echo "outcome: $OUTCOME"
           echo "user-permission: $PERM"
-          echo "check-result (is-bot): $CHECK_RESULT"
           if [ "$OUTCOME" = "success" ]; then
-            if [ -z "$CHECK_RESULT" ]; then
-              echo "FAIL: action succeeded but check-result output is empty"
+            if [ -z "$PERM" ]; then
+              echo "FAIL: action succeeded but user-permission output is empty"
               exit 1
             fi
-            # check-result should be true or false
-            case "$CHECK_RESULT" in
-              true|false)
-                echo "PASS: check-result is a valid boolean: $CHECK_RESULT"
+            # Valid permission levels are: admin, write, read, none
+            case "$PERM" in
+              admin|write|read|none)
+                echo "PASS: user-permission is a valid value: $PERM"
                 ;;
               *)
-                echo "FAIL: unexpected check-result value: $CHECK_RESULT"
+                echo "FAIL: unexpected permission value: $PERM"
                 exit 1
                 ;;
             esac
