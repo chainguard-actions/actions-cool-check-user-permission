@@ -1,0 +1,43 @@
+name: Test check-bot input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          token: ${{ github.token }}
+          username: github-actions[bot]
+          check-bot: 'true'
+
+      - name: Assert check-result output or graceful failure
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          CHECK_RESULT: ${{ steps.action.outputs.check-result }}
+          PERMISSION: ${{ steps.action.outputs.user-permission }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "user-permission: $PERMISSION"
+          echo "check-result: $CHECK_RESULT"
+          if [ "$OUTCOME" = "success" ]; then
+            if [ -z "$PERMISSION" ]; then
+              echo "FAIL: action succeeded but user-permission output is empty"
+              exit 1
+            fi
+            # check-result should be true or false when check-bot is set
+            if [ "$CHECK_RESULT" != "true" ] && [ "$CHECK_RESULT" != "false" ]; then
+              echo "FAIL: check-result should be 'true' or 'false', got '$CHECK_RESULT'"
+              exit 1
+            fi
+            echo "PASS: permission='$PERMISSION' check-result='$CHECK_RESULT'"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

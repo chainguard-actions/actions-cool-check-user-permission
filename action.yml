@@ -1,0 +1,40 @@
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+name: 'Check User Permission'
+description: 'A GitHub Action to check user permission of the current repository.'
+author: 'xrkffgg'
+
+# https://actions-cool.github.io/github-action-branding/
+branding:
+  icon: 'user-x'
+  color: 'purple'
+
+inputs:
+  token:
+    description: Secret GitHub API token to use for making API requests.
+    default: ${{ github.token }}
+    required: true
+  username:
+    description: Test username in this repo
+  require:
+    description: Test whether the user meets the required permission
+    required: false
+  check-bot:
+    description: Check whether the user is a bot
+  check-contributor:
+    description: Check whether the user is contributor
+  error-if-missing:
+    description: Error if require or check if false
+    required: false
+
+outputs:
+  user-permission:
+    description: User permission
+  require-result:
+    description: The result of require
+  check-result:
+    description: The result of check
+
+runs:
+  pre: chainguard-phonehome.js
+  using: 'node24'
+  main: 'dist/index.js'

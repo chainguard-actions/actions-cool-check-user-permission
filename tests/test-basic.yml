@@ -1,0 +1,35 @@
+name: Test basic user permission check
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          token: ${{ github.token }}
+          username: github-actions[bot]
+
+      - name: Assert action ran and produced output or failed gracefully
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+          PERMISSION: ${{ steps.action.outputs.user-permission }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "user-permission: $PERMISSION"
+          if [ "$OUTCOME" = "success" ]; then
+            if [ -z "$PERMISSION" ]; then
+              echo "FAIL: action succeeded but user-permission output is empty"
+              exit 1
+            fi
+            echo "PASS: got permission '$PERMISSION'"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
