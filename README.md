@@ -10,6 +10,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 |---------|-----|-----------------|
 | v2.2.0 | [`v2.2.0`](https://github.com/chainguard-actions/actions-cool-check-user-permission/tree/v2.2.0) | [`cd62200`](https://github.com/actions-cool/check-user-permission/commit/cd622002ff25c2311d2e7fb82107c0d24be83f9b) |
 | v2.3.0 | [`v2.3.0`](https://github.com/chainguard-actions/actions-cool-check-user-permission/tree/v2.3.0) | [`7b90a27`](https://github.com/actions-cool/check-user-permission/commit/7b90a27f92f3961b368376107661682c441f6103) |
+| v2.4.0 | [`v2.4.0`](https://github.com/chainguard-actions/actions-cool-check-user-permission/tree/v2.4.0) | [`c21884f`](https://github.com/actions-cool/check-user-permission/commit/c21884f3dda18dafc2f8b402fe807ccc9ec1aa5e) |
 
 ## Privacy
 
