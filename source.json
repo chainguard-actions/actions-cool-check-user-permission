@@ -4,8 +4,13 @@
   "version": "v2.2.0",
   "commit_sha": "cd622002ff25c2311d2e7fb82107c0d24be83f9b",
   "url": "https://github.com/actions-cool/check-user-permission",
-  "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
+  "policy_sha": "374911c4be584df24e6da57af2d990570ef0f859",
   "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
   "test_agent_version": "2",
-  "harden_agent_version": "2"
+  "harden_agent_version": "2",
+  "dist_artifact": {
+    "gcs_uri": "gs://patch-actions-node-artifacts/dist-artifacts/actions-cool/check-user-permission/v2.2.0/sha256-11b9f3f7865e3e9ff8bd524e363f9091053afbb66ccad353cff471ff66e84f5d.tar.gz",
+    "sha256": "11b9f3f7865e3e9ff8bd524e363f9091053afbb66ccad353cff471ff66e84f5d",
+    "size_bytes": 151771
+  }
 }
